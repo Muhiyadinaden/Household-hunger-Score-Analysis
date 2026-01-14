@@ -1,0 +1,87 @@
+------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\MuhiydenAden\Livelihood manuals\HHS\HHSresult.log
+  log type:  text
+ opened on:  14 Jan 2026, 13:21:18
+
+. 
+. 
+. recode HHhSNoFood_FR HHhSBedHung_FR HHhSNotEat_FR ( 3=2)
+(29 changes made to HHhSNoFood_FR)
+(20 changes made to HHhSBedHung_FR)
+(18 changes made to HHhSNotEat_FR)
+
+. 
+. sum HHhSNoFood_FR HHhSBedHung_FR HHhSNotEat_FR
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+HHhSNoFood~R |      3,000    .5186667    .7074497          0          2
+HHhSBedHun~R |      3,000    .4626667    .6856357          0          2
+HHhSNotEat~R |      3,000    .1706667    .4860915          0          2
+
+. 
+. 
+. * create HHS total
+. 
+. 
+. egen HHStotal= rowtotal(HHhSNoFood_FR HHhSBedHung_FR HHhSNotEat_FR)
+
+. 
+. 
+. * Create HHS categorical variable
+. 
+. 
+. recode HHStotal ( 0/1 =1) (2/3 =2) (4/6=3), generate ( HHSCategory)
+(2045 differences between HHStotal and HHSCategory)
+
+. 
+. lab def HHSCategory 1 " No or light hunger" 2" Moderate hunger" 3" Severe hunger"
+
+. 
+. lab val HHSCategory HHSCategory
+
+. 
+. * Inspect
+. tab HHSCategory
+
+ RECODE of HHStotal |      Freq.     Percent        Cum.
+--------------------+-----------------------------------
+ No or light hunger |      2,013       67.10       67.10
+    Moderate hunger |        693       23.10       90.20
+      Severe hunger |        294        9.80      100.00
+--------------------+-----------------------------------
+              Total |      3,000      100.00
+
+. 
+. 
+. 
+. ** Analyse
+. 
+. graph bar HHStotal, over( HHSCategory)
+
+. 
+. 
+. 
+. tab HHSCategory, sum(HHStotal)
+
+  RECODE of |         Summary of HHStotal
+   HHStotal |        Mean   Std. dev.       Freq.
+------------+------------------------------------
+   No or li |   .24888227   .43247288       2,013
+   Moderate |   2.3448773   .47567159         693
+   Severe h |   4.5238095   .73742781         294
+------------+------------------------------------
+      Total |       1.152   1.4905155       3,000
+
+. 
+. 
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  D:\MuhiydenAden\Livelihood manuals\HHS\HHSresult.log
+  log type:  text
+ closed on:  14 Jan 2026, 13:21:20
+------------------------------------------------------------------------------------------
